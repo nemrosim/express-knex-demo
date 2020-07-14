@@ -4,20 +4,19 @@ var knex = require('knex')({
     client: 'pg',
     connection: {
         host: '127.0.0.1',
-        port: '32768',
+        port: '32772',
         user: 'admin',
-        password: '123',
-        database: 'post'
+        password: 'admin',
+        database: 'demo'
     }
 });
 
-app.get('/users', async (req, res) => {
-    const result = await knex
+app.get('/users/:isRaw', async (req, res) => {
+    console.log("req params", req.params)
+    const users = await knex
         .select('first_name')
         .from('users')
-    res.json({
-        result
-    });
+    res.json({users: users.rows});
 });
 
 const PORT = 8080;
