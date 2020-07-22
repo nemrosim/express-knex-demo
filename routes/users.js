@@ -97,6 +97,29 @@ usersRouter.route('/leftJoin')
         response.json({users});
     });
 
+usersRouter.route('/whereAge')
+    .get(async (request, response) => {
+        const users = await knex('users')
+            .where('age', '>', Number.parseInt(request.query.age, 10))
+        response.json({users});
+    });
+
+usersRouter.route('/average-age')
+    .get(async (request, response) => {
+        const users = await knex('users').avg("age")
+        response.json({users});
+    });
+
+usersRouter.route('/subquery-v1')
+    .get(async (request, response) => {
+        const users = await knex('users')
+            .select("users.first_name", 'users.last_name', "users.age")
+            .where('age', '>',
+                knex('users').avg('age')
+            )
+        response.json({users});
+    });
+
 usersRouter.route('/getUserProducts')
     .get(async (request, response) => {
 
